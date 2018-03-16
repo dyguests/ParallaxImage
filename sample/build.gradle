@@ -31,4 +31,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     implementation project(':library')
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
