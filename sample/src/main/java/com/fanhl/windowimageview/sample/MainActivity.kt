@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
 
         Picasso.get()
                 .load(url)
-                .into(imageView)
+                .into(img_a)
+        Picasso.get()
+                .load(url)
+                .into(img_b)
     }
 }
