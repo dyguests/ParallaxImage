@@ -33,21 +33,19 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
     }
 
     private fun recomputeImgMatrix() {
-
         val drawable = drawable ?: return
 
         val matrix = imageMatrix
 
-        val scale: Float
         val viewWidth = width - paddingLeft - paddingRight
         val viewHeight = height - paddingTop - paddingBottom
         val drawableWidth = drawable.intrinsicWidth
         val drawableHeight = drawable.intrinsicHeight
 
-        if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
-            scale = viewHeight.toFloat() / drawableHeight.toFloat()
+        val scale = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
+            viewHeight.toFloat() / drawableHeight.toFloat()
         } else {
-            scale = viewWidth.toFloat() / drawableWidth.toFloat()
+            viewWidth.toFloat() / drawableWidth.toFloat()
         }
 
         matrix.setScale(scale, scale)
