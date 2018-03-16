@@ -23,11 +23,11 @@
         android:id="@+id/img_b"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="#000"
         app:layout_constraintStart_toEndOf="@+id/img_a"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_dialog"
-        android:layout_marginLeft="8dp"/>
+        app:srcCompat="@android:drawable/btn_dialog"/>
 </android.support.constraint.ConstraintLayout>
