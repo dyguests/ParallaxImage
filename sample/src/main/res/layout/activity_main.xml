@@ -19,15 +19,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_dialog"/>
 
-    <ImageView
+    <com.fanhl.windowimageview.WindowImageView
         android:id="@+id/img_b"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="152dp"
         android:background="#000"
         app:layout_constraintStart_toEndOf="@+id/img_a"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_dialog"/>
+
+    <com.fanhl.windowimageview.WindowImageView
+        android:id="@+id/img_c"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="#000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_b"
         app:srcCompat="@android:drawable/btn_dialog"/>
 </android.support.constraint.ConstraintLayout>
