@@ -1,6 +1,8 @@
 package com.fanhl.windowimageview
 
 import android.content.Context
+import android.graphics.Matrix
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -68,10 +70,20 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
             0f
         }
 
-        matrix.setTranslate(dx, dy)
-//        matrix.setTranslate(0f, 0f)
-        matrix.setScale(scale, scale)
+//        matrix.setTranslate(dx, dy)
 
+        val drawableRect: RectF
+        if (drawableScaledWidth > viewWidth) {
+            drawableRect = RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat())
+
+        } else {
+            drawableRect = RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat())
+
+        }
+
+        val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
+
+        matrix.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL)
 
         imageMatrix = matrix
     }
