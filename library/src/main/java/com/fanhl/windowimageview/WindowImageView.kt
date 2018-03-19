@@ -22,6 +22,11 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
     /** TAG */
     private val TAG = WindowImageView::class.java.simpleName!!
 
+    /**
+     * 依赖的View,主要是根据this在dependency中滚动的位置来判断橱窗效果的显示
+     */
+    private var dependency: View? = null
+
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -44,8 +49,8 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
             return
         }
 
-        val scrollView = scrollableView as ScrollView
-        scrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        dependency = scrollableView as ScrollView
+        (dependency as ScrollView).setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             recomputeImgMatrix()
         }
     }
