@@ -49,6 +49,26 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
         }
 
         matrix.setScale(scale, scale)
+
+        val drawableScaledWidth = drawableWidth * scale
+        val drawableScaledHeight = drawableHeight * scale
+
+        val horizontalBias = left.toFloat() / (left + right)
+        val verticalBias = top.toFloat() / (top + bottom)
+
+        val dx = if (drawableScaledWidth > viewWidth) {
+            horizontalBias * (drawableScaledWidth - viewWidth)
+        } else {
+            0f
+        }
+        val dy = if (drawableScaledHeight > viewHeight) {
+            verticalBias * (drawableScaledHeight - viewHeight)
+        } else {
+            0f
+        }
+
+        matrix.setTranslate(dx, dy)
+
         imageMatrix = matrix
     }
 }
