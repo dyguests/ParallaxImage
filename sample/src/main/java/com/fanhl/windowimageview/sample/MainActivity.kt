@@ -15,14 +15,14 @@ class MainActivity : AppCompatActivity() {
         val root = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
         setContentView(root)
 
-        Picasso.get()
-                .load(url)
-                .into(img_a)
+//        Picasso.get()
+//                .load(url)
+//                .into(img_a)
         Picasso.get()
                 .load(url)
                 .into(img_b)
-        Picasso.get()
-                .load(url)
-                .into(img_c)
+//        Picasso.get()
+//                .load(url)
+//                .into(img_c)
     }
 }
