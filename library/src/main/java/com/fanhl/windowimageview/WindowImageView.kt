@@ -3,9 +3,14 @@ package com.fanhl.windowimageview
 import android.content.Context
 import android.graphics.Matrix
 import android.graphics.RectF
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import android.view.ViewParent
 import android.widget.ImageView
+import android.widget.ScrollView
 
 /**
  * desc: 橱窗ImageView
@@ -14,6 +19,8 @@ import android.widget.ImageView
  * @author fanhl
  */
 class WindowImageView : android.support.v7.widget.AppCompatImageView {
+    /** TAG */
+    private val TAG = WindowImageView::class.java.simpleName!!
 
     constructor(context: Context) : super(context)
 
@@ -23,6 +30,24 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
 
     init {
         scaleType = ImageView.ScaleType.MATRIX
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        var scrollableView: ViewParent? = parent
+        while (scrollableView != null && scrollableView !is ScrollView) {
+            scrollableView = scrollableView.parent
+        }
+        if (scrollableView == null) {
+            return
+        }
+
+        val scrollView = scrollableView as ScrollView
+        scrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            recomputeImgMatrix()
+        }
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -36,6 +61,7 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
     }
 
     private fun recomputeImgMatrix() {
+        Log.i(TAG, "recomputeImgMatrix ")
         val drawable = drawable ?: return
 
         val matrix = imageMatrix
