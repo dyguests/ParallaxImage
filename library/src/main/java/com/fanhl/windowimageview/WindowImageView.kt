@@ -2,6 +2,7 @@ package com.fanhl.windowimageview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
 
 /**
@@ -48,13 +49,13 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
             viewWidth.toFloat() / drawableWidth.toFloat()
         }
 
-        matrix.setScale(scale, scale)
+//        matrix.setScale(scale, scale)
 
         val drawableScaledWidth = drawableWidth * scale
         val drawableScaledHeight = drawableHeight * scale
 
-        val horizontalBias = left.toFloat() / (left + right)
-        val verticalBias = top.toFloat() / (top + bottom)
+        val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
+        val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
 
         val dx = if (drawableScaledWidth > viewWidth) {
             horizontalBias * (drawableScaledWidth - viewWidth)
@@ -68,6 +69,9 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
         }
 
         matrix.setTranslate(dx, dy)
+//        matrix.setTranslate(0f, 0f)
+        matrix.setScale(scale, scale)
+
 
         imageMatrix = matrix
     }
