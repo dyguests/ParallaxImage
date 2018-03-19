@@ -45,18 +45,15 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
         val drawableWidth = drawable.intrinsicWidth
         val drawableHeight = drawable.intrinsicHeight
 
-        val scale = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
-            viewHeight.toFloat() / drawableHeight.toFloat()
-        } else {
-            viewWidth.toFloat() / drawableWidth.toFloat()
-        }
+        // TODO 以下计算式等其它部分全部完全后再优化
 
-
-        val drawableRect = if (drawableWidth * scale > viewWidth) {
+        val drawableRect = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
+            val scale = viewHeight.toFloat() / drawableHeight.toFloat()
             val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
             val dx = horizontalBias * (drawableWidth - viewWidth / scale)
             RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat())
         } else {
+            val scale = viewWidth.toFloat() / drawableWidth.toFloat()
             val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
             val dy = verticalBias * (drawableHeight - viewHeight / scale)
             RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat())
