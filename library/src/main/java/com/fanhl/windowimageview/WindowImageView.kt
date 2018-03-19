@@ -51,34 +51,31 @@ class WindowImageView : android.support.v7.widget.AppCompatImageView {
             viewWidth.toFloat() / drawableWidth.toFloat()
         }
 
-//        matrix.setScale(scale, scale)
-
         val drawableScaledWidth = drawableWidth * scale
         val drawableScaledHeight = drawableHeight * scale
 
         val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
         val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
 
-        val dx = if (drawableScaledWidth > viewWidth) {
-            horizontalBias * (drawableWidth - viewWidth / scale)
-        } else {
-            0f
-        }
-        val dy = if (drawableScaledHeight > viewHeight) {
-            verticalBias * (drawableHeight - viewHeight / scale)
-        } else {
-            0f
-        }
+//        val dx = if (drawableScaledWidth > viewWidth) {
+//            horizontalBias * (drawableWidth - viewWidth / scale)
+//        } else {
+//            0f
+//        }
+//        val dy = if (drawableScaledHeight > viewHeight) {
+//            verticalBias * (drawableHeight - viewHeight / scale)
+//        } else {
+//            0f
+//        }
 
 //        matrix.setTranslate(dx, dy)
 
-        val drawableRect: RectF
-        if (drawableScaledWidth > viewWidth) {
-            drawableRect = RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat())
-
+        val drawableRect = if (drawableScaledWidth > viewWidth) {
+            val dx = horizontalBias * (drawableWidth - viewWidth / scale)
+            RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat())
         } else {
-            drawableRect = RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat())
-
+            val dy = verticalBias * (drawableHeight - viewHeight / scale)
+            RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat())
         }
 
         val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
