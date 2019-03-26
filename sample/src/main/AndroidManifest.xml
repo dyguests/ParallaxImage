@@ -4,6 +4,9 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.fanhl.parallaximage.sample">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <dist:module dist:instant="true"/>
 
     <application

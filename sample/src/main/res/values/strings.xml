@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ParallaxImage</string>
+    <string name="linear_layout_manager">androidx.recyclerview.widget.LinearLayoutManager</string>
 </resources>
