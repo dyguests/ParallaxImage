@@ -40,25 +40,13 @@ class ParallaxImageRecyclerViewHelper private constructor() {
         }
     }
 
-    private fun setup(imageView: ImageView) {
+    private fun setup(recyclerView: RecyclerView, imageView: ImageView) {
         this.target = imageView
-        val recyclerView = findRecyclerViewParent(imageView)
         if (this.dependency != recyclerView) {
             this.dependency?.removeOnScrollListener(onScrollListener)
             this.dependency = recyclerView
         }
         recyclerView?.addOnScrollListener(onScrollListener) ?: return
-    }
-
-    private fun findRecyclerViewParent(imageView: ImageView): RecyclerView? {
-        var parent = imageView.parent
-        while (parent != null) {
-            if (parent is RecyclerView) {
-                return parent
-            }
-            parent = parent.parent
-        }
-        return null
     }
 
     private fun computeImageMatrix(
@@ -118,9 +106,9 @@ class ParallaxImageRecyclerViewHelper private constructor() {
         private val TAG = ParallaxImageRecyclerViewHelper::class.java.simpleName
         private val helperPools by lazy { Pools.SimplePool<ParallaxImageRecyclerViewHelper>(12) }
 
-        fun setup(imageView: ImageView) {
+        fun setup(recyclerView: RecyclerView, imageView: ImageView) {
             val helper = helperPools.acquire() ?: ParallaxImageRecyclerViewHelper()
-            helper.setup(imageView)
+            helper.setup(recyclerView, imageView)
         }
     }
 }
