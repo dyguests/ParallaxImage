@@ -6,15 +6,16 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.core.math.MathUtils
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.ref.WeakReference
 
 /**
  * 处理图像在滚动中的显示
  */
 class ParallaxImageRecyclerViewHelper private constructor() {
     /** 目前图像 */
-    private var target: ImageView? = null
+    private var target: WeakReference<ImageView>? = null
     /** 目前图像所在的滚动父布局 */
-    private var dependency: RecyclerView? = null
+    private var dependency: WeakReference<RecyclerView>? = null
 
     /** target的宽度与dependency的宽度的比率 */
     private var widthRate = 1f
@@ -33,17 +34,17 @@ class ParallaxImageRecyclerViewHelper private constructor() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             computeImageMatrix(
-                target ?: return,
-                dependency ?: return
+                target?.get() ?: return,
+                dependency?.get() ?: return
             )
         }
     }
 
     private fun setup(recyclerView: RecyclerView, imageView: ImageView) {
-        this.target = imageView
-        if (this.dependency != recyclerView) {
-            this.dependency?.removeOnScrollListener(onScrollListener)
-            this.dependency = recyclerView
+        this.target = WeakReference(imageView)
+        if (this.dependency?.get() != recyclerView) {
+            this.dependency?.get()?.removeOnScrollListener(onScrollListener)
+            this.dependency = WeakReference(recyclerView)
         }
         recyclerView?.addOnScrollListener(onScrollListener) ?: return
     }
@@ -69,7 +70,7 @@ class ParallaxImageRecyclerViewHelper private constructor() {
 
 //        Log.d(TAG, "widthRate:$widthRate,heightRate:$heightRate  horizontalBias:$horizontalBias,verticalBias:$verticalBias")
 
-        this.target?.apply {
+        target?.apply {
             val drawable = drawable ?: return
 
 //            val matrix = imageMatrix
