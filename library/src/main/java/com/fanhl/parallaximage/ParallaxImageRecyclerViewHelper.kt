@@ -4,7 +4,7 @@ import android.graphics.Matrix
 import android.graphics.RectF
 import android.util.Log
 import android.widget.ImageView
-import androidx.core.util.Pools
+import androidx.core.math.MathUtils
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -64,15 +64,15 @@ class ParallaxImageRecyclerViewHelper private constructor() {
         val dependencyX = outLocation[0]
         val dependencyY = outLocation[1]
 
-        horizontalBias = (targetX - dependencyX).toFloat() / (dependency.width - target.width)
-        verticalBias = (targetY - dependencyY).toFloat() / (dependency.height - target.height)
+        horizontalBias = ((targetX - dependencyX).toFloat() / (dependency.width - target.width)).clamp()
+        verticalBias = ((targetY - dependencyY).toFloat() / (dependency.height - target.height)).clamp()
 
-        Log.d(TAG, "widthRate:$widthRate,heightRate:$heightRate  horizontalBias:$horizontalBias,verticalBias:$verticalBias")
+//        Log.d(TAG, "widthRate:$widthRate,heightRate:$heightRate  horizontalBias:$horizontalBias,verticalBias:$verticalBias")
 
         this.target?.apply {
             val drawable = drawable ?: return
 
-            val matrix = imageMatrix
+//            val matrix = imageMatrix
 
             val viewWidth = width// - paddingLeft - paddingRight
             val viewHeight = height// - paddingTop - paddingBottom
@@ -95,19 +95,22 @@ class ParallaxImageRecyclerViewHelper private constructor() {
 
             val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
 
-            matrix.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL)
+            Log.d(TAG, "drawableRect:$drawableRect  viewRect:$viewRect")
 
-            imageMatrix = matrix
+            imageMatrix.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL)
+            invalidate()
+
+//            imageMatrix = matrix
         }
     }
 
     companion object {
         private val TAG = ParallaxImageRecyclerViewHelper::class.java.simpleName
-        private val helperPools by lazy { Pools.SimplePool<ParallaxImageRecyclerViewHelper>(12) }
 
         fun setup(recyclerView: RecyclerView, imageView: ImageView) {
-            val helper = helperPools.acquire() ?: ParallaxImageRecyclerViewHelper()
-            helper.setup(recyclerView, imageView)
+            ParallaxImageRecyclerViewHelper().setup(recyclerView, imageView)
         }
     }
+
+    private fun Float.clamp() = MathUtils.clamp(this, 0f, 1f)
 }
