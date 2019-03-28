@@ -16,5 +16,8 @@
         android:paddingTop="@dimen/unit_half"
         android:paddingBottom="@dimen/unit_half"
         app:layoutManager="@string/linear_layout_manager"
-        tools:listitem="@layout/item_main_cover"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/item_main_cover" />
 </androidx.constraintlayout.widget.ConstraintLayout>
