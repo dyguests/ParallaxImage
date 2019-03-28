@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        recycler_view.adapter = adapter
+        adapter.bindToRecyclerView(recycler_view)
     }
 
     private fun refreshData() {

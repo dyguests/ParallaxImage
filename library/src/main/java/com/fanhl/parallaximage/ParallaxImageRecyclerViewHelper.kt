@@ -41,9 +41,8 @@ class ParallaxImageRecyclerViewHelper private constructor() {
     }
 
     private fun setup(imageView: ImageView) {
-        val recyclerView = findRecyclerViewParent(imageView)
-
         this.target = imageView
+        val recyclerView = findRecyclerViewParent(imageView)
         if (this.dependency != recyclerView) {
             this.dependency?.removeOnScrollListener(onScrollListener)
             this.dependency = recyclerView
