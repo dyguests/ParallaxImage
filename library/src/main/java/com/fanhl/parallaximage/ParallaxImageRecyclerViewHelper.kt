@@ -3,7 +3,6 @@ package com.fanhl.parallaximage
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import androidx.core.util.Pools
 import androidx.recyclerview.widget.RecyclerView
@@ -75,8 +74,8 @@ class ParallaxImageRecyclerViewHelper private constructor() {
 
             val matrix = imageMatrix
 
-            val viewWidth = width - paddingLeft - paddingRight
-            val viewHeight = height - paddingTop - paddingBottom
+            val viewWidth = width// - paddingLeft - paddingRight
+            val viewHeight = height// - paddingTop - paddingBottom
             val drawableWidth = drawable.intrinsicWidth
             val drawableHeight = drawable.intrinsicHeight
 
@@ -84,12 +83,12 @@ class ParallaxImageRecyclerViewHelper private constructor() {
 
             val drawableRect = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
                 val scale = viewHeight.toFloat() / drawableHeight.toFloat()
-                val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
+//                val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
                 val dx = horizontalBias * (drawableWidth - viewWidth / scale)
                 RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat() * viewWidth / viewHeight)
             } else {
                 val scale = viewWidth.toFloat() / drawableWidth.toFloat()
-                val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
+//                val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
                 val dy = verticalBias * (drawableHeight - viewHeight / scale)
                 RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat() * viewHeight / viewWidth)
             }
