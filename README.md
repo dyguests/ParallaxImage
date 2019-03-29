@@ -1,5 +1,7 @@
 # ParallaxImage
 
+[![](https://jitpack.io/v/dyguests/ParallaxImage.svg)](https://jitpack.io/#dyguests/ParallaxImage)
+
 一个带有橱窗效果的ImageView.
 
 ![](./graphics/sample1.gif)
