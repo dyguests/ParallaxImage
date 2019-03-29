@@ -4,7 +4,6 @@ import android.graphics.Matrix
 import android.graphics.RectF
 import android.util.Log
 import android.widget.ImageView
-import androidx.core.math.MathUtils
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.ref.WeakReference
 
@@ -112,6 +111,4 @@ class ParallaxImageRecyclerViewHelper private constructor() {
             ParallaxImageRecyclerViewHelper().setup(recyclerView, imageView)
         }
     }
-
-    private fun Float.clamp() = MathUtils.clamp(this, 0f, 1f)
 }

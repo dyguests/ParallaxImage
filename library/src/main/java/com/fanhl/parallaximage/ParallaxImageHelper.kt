@@ -3,7 +3,10 @@ package com.fanhl.parallaximage
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class ParallaxImageScrollViewHelper {
+/**
+ * 之后把所有视差效果的添加都放到这里
+ */
+class ParallaxImageHelper {
     private fun findRecyclerViewParent(imageView: ImageView): RecyclerView? {
         var parent = imageView.parent
         while (parent != null) {
@@ -13,5 +16,11 @@ class ParallaxImageScrollViewHelper {
             parent = parent.parent
         }
         return null
+    }
+
+    companion object {
+        fun setup(imageView: ImageView) {
+
+        }
     }
 }
