@@ -1,4 +1,4 @@
-package com.fanhl.parallaximage.sample
+package com.fanhl.parallaximage.sample.util
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
