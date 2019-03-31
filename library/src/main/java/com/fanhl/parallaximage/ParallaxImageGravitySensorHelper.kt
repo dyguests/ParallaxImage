@@ -37,7 +37,7 @@ class ParallaxImageGravitySensorHelper(
     private var target: WeakReference<ImageView>? = null
 
     /** drawable显示的区域的占比（只计算长轴）（多余部分用来适配重力变化时图像偏移） */
-    private var offsetRate = 0.9f
+    private var viewportRate = 0.9f
 
     private var horizontalBias = 0.5f
     private var verticalBias = 0.5f
@@ -53,8 +53,10 @@ class ParallaxImageGravitySensorHelper(
     }
 
     private fun computeImageMatrix(target: ImageView) {
-        horizontalBias = ((rotation.x + 10f) / 20).clamp()
-        verticalBias = ((rotation.x + 10f) / 20).clamp()
+        horizontalBias = (rotation.x / 20).clampCenter()
+        verticalBias = (rotation.y / 20).clampCenter()
+
+//        val offsetRate = (1f - viewportRate) / 2f
 
         target?.apply {
             val drawable = drawable ?: return
@@ -64,13 +66,13 @@ class ParallaxImageGravitySensorHelper(
             val drawableWidth = drawable.intrinsicWidth
             val drawableHeight = drawable.intrinsicHeight
 
-            val rate = maxOf(width.toFloat() / drawableWidth, viewHeight.toFloat() / drawableHeight) * offsetRate
+            val rate = maxOf(width.toFloat() / drawableWidth, viewHeight.toFloat() / drawableHeight) / viewportRate
 
             val drawableRect = RectF(
-                drawableWidth / 2f - drawableWidth * rate / 2f,
-                drawableHeight / 2f - drawableHeight * rate / 2f,
-                drawableHeight / 2f + drawableWidth * rate / 2f,
-                drawableWidth / 2f + drawableHeight * rate / 2f
+                drawableWidth / 2f - viewWidth / rate / 2f + viewWidth / rate * horizontalBias,
+                drawableHeight / 2f - viewHeight / rate / 2f + viewHeight / rate * verticalBias,
+                drawableWidth / 2f + viewWidth / rate / 2f + viewWidth / rate * horizontalBias,
+                drawableHeight / 2f + viewHeight / rate / 2f + viewHeight / rate * verticalBias
             )
 
             val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
