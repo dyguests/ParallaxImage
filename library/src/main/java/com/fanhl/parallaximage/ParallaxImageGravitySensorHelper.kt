@@ -36,9 +36,8 @@ class ParallaxImageGravitySensorHelper(
     /** 目前图像 */
     private var target: WeakReference<ImageView>? = null
 
-    /** target的宽度与dependency的宽度的比率 */
-    private var widthRate = 0.9f
-    private var heightRate = 0.9f
+    /** drawable显示的区域的占比（只计算长轴）（多余部分用来适配重力变化时图像偏移） */
+    private var offsetRate = 0.9f
 
     private var horizontalBias = 0.5f
     private var verticalBias = 0.5f
@@ -54,7 +53,6 @@ class ParallaxImageGravitySensorHelper(
     }
 
     private fun computeImageMatrix(target: ImageView) {
-
         horizontalBias = ((rotation.x + 10f) / 20).clamp()
         verticalBias = ((rotation.x + 10f) / 20).clamp()
 
@@ -66,17 +64,14 @@ class ParallaxImageGravitySensorHelper(
             val drawableWidth = drawable.intrinsicWidth
             val drawableHeight = drawable.intrinsicHeight
 
-            val drawableRect = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
-                val scale = viewHeight.toFloat() / drawableHeight.toFloat()
-//                val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
-                val dx = horizontalBias * (drawableWidth - viewWidth / scale)
-                RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat() * viewWidth / viewHeight)
-            } else {
-                val scale = viewWidth.toFloat() / drawableWidth.toFloat()
-//                val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
-                val dy = verticalBias * (drawableHeight - viewHeight / scale)
-                RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat() * viewHeight / viewWidth)
-            }
+            val rate = maxOf(width.toFloat() / drawableWidth, viewHeight.toFloat() / drawableHeight) * offsetRate
+
+            val drawableRect = RectF(
+                drawableWidth / 2f - drawableWidth * rate / 2f,
+                drawableHeight / 2f - drawableHeight * rate / 2f,
+                drawableHeight / 2f + drawableWidth * rate / 2f,
+                drawableWidth / 2f + drawableHeight * rate / 2f
+            )
 
             val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
 
