@@ -29,6 +29,14 @@ class ParallaxImageRecyclerViewHelper private constructor() {
      */
     private val outLocation = IntArray(2)
 
+    var targetX: Int = 0
+    var targetY: Int = 0
+    var dependencyX: Int = 0
+    var dependencyY: Int = 0
+
+    var drawableRect: RectF = RectF()
+    var viewRect: RectF = RectF()
+
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -45,6 +53,7 @@ class ParallaxImageRecyclerViewHelper private constructor() {
             this.dependency?.get()?.removeOnScrollListener(onScrollListener)
             this.dependency = WeakReference(recyclerView)
         }
+
         recyclerView?.addOnScrollListener(onScrollListener) ?: return
     }
 
@@ -58,11 +67,11 @@ class ParallaxImageRecyclerViewHelper private constructor() {
 
         //FIXME 这部分可以根据父布局的滚动方向，只计算对应方向的就可以了
         target.getLocationOnScreen(outLocation)
-        val targetX = outLocation[0]
-        val targetY = outLocation[1]
+        targetX = outLocation[0]
+        targetY = outLocation[1]
         dependency.getLocationOnScreen(outLocation)
-        val dependencyX = outLocation[0]
-        val dependencyY = outLocation[1]
+        dependencyX = outLocation[0]
+        dependencyY = outLocation[1]
 
         horizontalBias = ((targetX - dependencyX).toFloat() / (dependency.width - target.width)).clamp()
         verticalBias = ((targetY - dependencyY).toFloat() / (dependency.height - target.height)).clamp()
@@ -81,19 +90,33 @@ class ParallaxImageRecyclerViewHelper private constructor() {
 
             // TODO 以下计算式等其它部分全部完全后再优化
 
-            val drawableRect = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
+            if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
                 val scale = viewHeight.toFloat() / drawableHeight.toFloat()
-//                val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
+                //                val horizontalBias = left.toFloat() / (left + (parent as View).right - right)
                 val dx = horizontalBias * (drawableWidth - viewWidth / scale)
-                RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat() * viewWidth / viewHeight)
+
+                drawableRect.apply {
+                    left = dx
+                    top = 0f
+                    right = dx + drawableHeight.toFloat()
+                    bottom = drawableHeight.toFloat() * viewWidth / viewHeight
+                }
+//                RectF(dx, 0f, dx + drawableHeight.toFloat(), drawableHeight.toFloat() * viewWidth / viewHeight)
             } else {
                 val scale = viewWidth.toFloat() / drawableWidth.toFloat()
-//                val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
+                //                val verticalBias = top.toFloat() / (top + (parent as View).bottom - bottom)
                 val dy = verticalBias * (drawableHeight - viewHeight / scale)
-                RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat() * viewHeight / viewWidth)
+
+                drawableRect.apply {
+                    left = 0f
+                    top = dy
+                    right = drawableWidth.toFloat()
+                    bottom = dy + drawableWidth.toFloat() * viewHeight / viewWidth
+                }
+//                RectF(0f, dy, drawableWidth.toFloat(), dy + drawableWidth.toFloat() * viewHeight / viewWidth)
             }
 
-            val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
+            viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
 
             Log.d(TAG, "drawableRect:$drawableRect  viewRect:$viewRect")
 
@@ -107,7 +130,7 @@ class ParallaxImageRecyclerViewHelper private constructor() {
     companion object {
         private val TAG = ParallaxImageRecyclerViewHelper::class.java.simpleName
 
-        fun setup(recyclerView: RecyclerView, imageView: ImageView) {
+        fun setup(imageView: ImageView, recyclerView: RecyclerView) {
             ParallaxImageRecyclerViewHelper().setup(recyclerView, imageView)
         }
     }

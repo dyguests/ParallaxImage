@@ -3,7 +3,7 @@ package com.fanhl.parallaximage.sample.ui.recycler.adapter
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import com.fanhl.parallaximage.ParallaxImageRecyclerViewHelper
+import com.fanhl.parallaximage.ParallaxImageHelper
 import com.fanhl.parallaximage.sample.R
 import com.fanhl.parallaximage.sample.model.Cover
 import kotlinx.android.synthetic.main.item_main_cover.view.*
@@ -34,7 +34,7 @@ class RecyclerAdapter : BaseQuickAdapter<Cover, RecyclerAdapter.ViewHolder>(R.la
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
         init {
             itemView.apply {
-                ParallaxImageRecyclerViewHelper.setup(recyclerView, img_cover)
+                ParallaxImageHelper.setup(img_cover, recyclerView)
             }
         }
     }
